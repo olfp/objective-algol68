@@ -1,0 +1,55 @@
+# --- Generated structures for SHAPE --- #
+MODE SHAPEVMT = STRUCT(
+    PROC(REF SHAPE) VOID initX_y
+);
+REF SHAPEVMT shape vmt;
+MODE SHAPE = STRUCT(
+    REF SHAPEVMT vmt,
+    INT x,
+    INT y
+);
+
+# --- Generated structures for CIRCLE --- #
+MODE CIRCLEVMT = STRUCT(
+    SHAPEVMT base,
+    PROC(REF CIRCLE) VOID initX_y_radius
+);
+REF CIRCLEVMT circle vmt;
+MODE CIRCLE = STRUCT(
+    SHAPE base,
+    INT radius
+);
+
+# --- Auto-Generated Global VMT Setup --- #
+PROC init vmts = VOID: (
+    shape vmt := HEAP SHAPEVMT := (shape initX_y);
+    circle vmt := HEAP CIRCLEVMT := ((circle initX_y, circle initX_y_radius));
+);
+
+
+    INT x;
+    INT y;
+
+    # The multi-argument SUPER call correctly mapped to the shape_vmt layout #
+    PROC shape initX_y = (REF SHAPE self, INT initX, INT initY) VOID: (
+        x OF self := initX;
+        y OF self := initY
+    );
+
+
+    INT radius;
+
+    # Receives sequential layout mappings #
+    PROC circle initX_y_radius = (REF CIRCLE self, INT initX, INT initY, INT initR) VOID: (
+        (initX_y OF shape vmt)((base OF self), initX, initY);
+        radius OF self := initR
+    );
+
+
+START = 
+BEGIN
+    init vmts();
+    REF CIRCLE myCircle := ( REF CIRCLE obj := HEAP CIRCLE; vmt OF obj := circle vmt; obj );
+    (initX_y_radius OF vmt OF myCircle)(myCircle, 10, 20, 5);
+END
+
