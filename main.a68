@@ -1,0 +1,9 @@
+# GENERIERTE DATEI: main.a68 #
+ACCESS shapesmod BEGIN
+    # Der Präprozessor wandelt das NEW-Konstrukt in den passenden Prozeduraufruf um #
+    SHAPE irgend_eine_form := SHAPE(newcircle(10, 20, 5)); 
+    
+    # Aus: irgend_eine_form :: print_area #
+    # Wird: Ein dynamischer Aufruf über die VMT des Objekts #
+    (printarea OF vmt OF irgend_eine_form)(irgend_eine_form);
+END

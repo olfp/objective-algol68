@@ -1,0 +1,83 @@
+(* ========================================================================= *)
+(* 1. PROGRAMM- UND MODULSTRUKTUR                                            *)
+(* ========================================================================= *)
+
+o68_program        = [ module_definition ] , block ;
+
+module_definition  = "MODULE" , identifier_lowercase , "=" , "DEF" , 
+                     { class_definition } , 
+                     "FED" ;
+
+(* ========================================================================= *)
+(* 2. KLASSEN-DEFINITIONEN (CLASSES)                                         *)
+(* ========================================================================= *)
+
+class_definition   = [ "PUB" ] , "CLASS" , identifier_uppercase , [ inheritance ] , "=" , 
+                     "BEGIN" , 
+                         { class_body_element } , 
+                     "END" , ";" ;
+
+inheritance        = "EXTENDS" , identifier_uppercase ;
+
+class_body_element = field_declaration | method_definition ;
+
+(* ========================================================================= *)
+(* 3. FELDER UND METHODEN                                                    *)
+(* ========================================================================= *)
+
+field_declaration  = [ "PUB" ] , mode_declarer , identifier_lowercase , ";" ;
+
+method_definition  = [ "PUB" ] , [ method_modifier ] , "METHOD" , 
+                     identifier_lowercase , ":" , [ method_parameters ] , 
+                     mode_declarer , ":" , enclosed_clause , ";" ;
+
+method_modifier    = "VIRTUAL" | "EXTEND" ;
+
+method_parameters  = "(" , parameter_list , ")" ;
+parameter_list     = parameter { "," , parameter } ;
+parameter          = mode_declarer , identifier_lowercase ;
+
+(* ========================================================================= *)
+(* 4. OBJEKTORIENTIERTE BEFEHLE UND AUSDRÜCKE                                *)
+(* ========================================================================= *)
+
+(* Erweitert die Standard-Ausdrücke (units) von Algol 68 *)
+o68_unit           = instantiation | method_call | upward_invocation | standard_a68_unit ;
+
+(* NEW-Konstrukt: Reserviert HEAP und ruft direkt den Konstruktor auf *)
+instantiation      = "NEW" , identifier_uppercase , [ argument_list ] ;
+
+(* Der :: Operator für reguläre oder parameterlose Methodenaufrufe *)
+method_call        = identifier_lowercase , "::" , identifier_lowercase , [ argument_list ] ;
+
+(* UPWARD VMT INVOCATION via super SEND *)
+upward_invocation  = "super" , "SEND" , identifier_lowercase , argument_list ;
+
+argument_list      = "(" , [ expression { "," , expression } ] , ")" ;
+
+(* ========================================================================= *)
+(* 5. BASISTYPEN UND BEZEICHNER (LEXIKALISCH)                                *)
+(* ========================================================================= *)
+
+(* In Algol 68 sind MODEs (Klassen) echte Declarer und damit Bold-Words *)
+mode_declarer        = "INT" | "REAL" | "BOOL" | "CHAR" | "STRING" | "VOID" | identifier_uppercase ;
+
+(* Bezeichner-Regeln für das Upper Stropping *)
+identifier_uppercase = letter_uppercase , { letter_uppercase | digit | "_" } ;
+identifier_lowercase = letter_lowercase , { letter_lowercase | digit | "_" } ;
+
+letter_uppercase     = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" 
+
+                     | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" ;
+                     
+letter_lowercase     = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" 
+
+                     | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+
+digit                = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+(* Platzhalter für bestehende Algol 68 Grammatikregeln *)
+block                = "BEGIN" , { expression } , "END" ;
+enclosed_clause      = "(" , { expression } , ")" ;
+standard_a68_unit    = ? jede valide Standard-A68-Unit wie Zuweisungen, Formeln etc. ? ;
+expression           = ? regulärer Algol 68 Ausdruck ? ;
