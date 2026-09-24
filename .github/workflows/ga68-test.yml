@@ -11,10 +11,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Algol 68 compiler
+      - name: Install GCC with the Algol 68 front end
         run: |
           sudo apt-get update
-          sudo apt-get install -y algol68g
+          sudo apt-get install -y gcc
+          command -v ga68
+          ga68 --version
 
       - name: Discover generated Algol 68 sources
         run: |
@@ -23,12 +25,12 @@ jobs:
       - name: Compile discovered sources
         run: |
           set -e
-          files=$(find . -type f \( -name '*.a68' -o -name '*.68' -o -name '*.alg' \) | sort)
-          if [ -z "$files" ]; then
+          mapfile -t files < <(find . -type f \( -name '*.a68' -o -name '*.68' -o -name '*.alg' \) | sort)
+          if [ "${#files[@]}" -eq 0 ]; then
             echo "No Algol 68 sources found; skipping compile step."
             exit 0
           fi
-          for f in $files; do
+          for f in "${files[@]}"; do
             echo "Compiling $f"
             ga68 "$f"
           done
