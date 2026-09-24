@@ -6,23 +6,23 @@ on:
 
 jobs:
   compile:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install GCC with the Algol 68 front end
+      - name: Install GCC Algol 68 front end
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc
-          command -v ga68
-          ga68 --version
+          sudo apt-get install -y ga68-16
+          command -v ga68-16
+          ga68-16 --version
 
       - name: Discover generated Algol 68 sources
         run: |
           find . -type f \( -name '*.a68' -o -name '*.68' -o -name '*.alg' \) | sort
 
-      - name: Compile discovered sources
+      - name: Compile discovered Algol 68 sources
         run: |
           set -e
           mapfile -t files < <(find . -type f \( -name '*.a68' -o -name '*.68' -o -name '*.alg' \) | sort)
@@ -32,5 +32,5 @@ jobs:
           fi
           for f in "${files[@]}"; do
             echo "Compiling $f"
-            ga68 "$f"
+            ga68-16 "$f"
           done
