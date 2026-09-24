@@ -32,5 +32,5 @@ jobs:
           fi
           for f in "${files[@]}"; do
             echo "Compiling $f"
-            ga68-16 "$f"
+            ga68-16 -std=gnu68 -O2 -fstropping=upper "$f"
           done
