@@ -77,7 +77,7 @@
     # Hilfsmethode: Gibt alle Elementnamen in der Collection aus #
     𝐏𝐔𝐁 𝐌𝐄𝐓𝐇𝐎𝐃 𝑝𝑟𝑖𝑛𝑡_𝑎𝑙𝑙: 𝐕𝐎𝐈𝐃: (
         𝐒𝐇𝐀𝐏𝐄𝐍𝐎𝐃𝐄 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 := ℎ𝑒𝑎𝑑 𝐎𝐅 𝑠𝑒𝑙𝑓;
-        𝐖𝐇𝐈𝐋𝐄 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝐈𝐒𝐍𝐓 REF NODE(𝐍𝐈𝐋) 𝐃𝐎
+        𝐖𝐇𝐈𝐋𝐄 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝐈𝐒𝐍𝐓 𝐫𝐞𝐟 𝐧𝐨𝐝𝐞(𝐍𝐈𝐋) 𝐃𝐎
             # Dynamic Dispatch: Ruft polymorph die korrekte name-Methode auf #
             𝑝𝑢𝑡𝑠(𝑖𝑡𝑒𝑚 𝐎𝐅 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 :: 𝑛𝑎𝑚𝑒, "'n");
             𝑐𝑢𝑟𝑟𝑒𝑛𝑡 := 𝑛𝑒𝑥𝑡 𝐎𝐅 𝑐𝑢𝑟𝑟𝑒𝑛𝑡
