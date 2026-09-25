@@ -1,9 +1,8 @@
-# GENERIERTE DATEI: main.a68 #
+# DATEI: main.o68 #
 𝐀𝐂𝐂𝐄𝐒𝐒 𝑠ℎ𝑎𝑝𝑒𝑠𝑚𝑜𝑑 𝐁𝐄𝐆𝐈𝐍
-    # Der Praeprozessor wandelt das NEW-Konstrukt in den passenden Prozeduraufruf um #
-    𝐒𝐇𝐀𝐏𝐄 𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚 := 𝐒𝐇𝐀𝐏𝐄(𝑛𝑒𝑤𝑐𝑖𝑟𝑐𝑙𝑒(10, 20, 5)); 
+    # Polymorphe Zuweisung: Ein CIRCLE verkleidet als SHAPE #
+    𝐒𝐇𝐀𝐏𝐄 𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚 := 𝐍𝐄𝐖 𝐂𝐈𝐑𝐂𝐋𝐄(10, 20, 5); 
     
-    # Aus: irgend_eine_form :: print_area #
-    # Wird: Ein dynamischer Aufruf ueber die VMT des Objekts #
-    (𝑝𝑟𝑖𝑛𝑡𝑎𝑟𝑒𝑎 𝐎𝐅 𝑣𝑚𝑡 𝐎𝐅 𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚)(𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚);
+    # Dynamischer Aufruf (Dynamic Dispatch) über die VMT #
+    𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚 :: 𝑝𝑟𝑖𝑛𝑡_𝑎𝑟𝑒𝑎;
 𝐄𝐍𝐃
