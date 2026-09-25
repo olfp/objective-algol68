@@ -1,4 +1,5 @@
 PYTHON ?= python3
+U682A68 ?= u682a68
 GA68 ?= ga68
 GA68FLAGS ?= -std=gnu68 -fstropping=upper
 
@@ -19,8 +20,10 @@ SHAPES_OBJ := $(SHAPES_A68:.a68=.o)
 
 all: $(COLLECTION) $(SHAPES)
 
-%.o68: %.u68 u682a68
-	u682a68 <"$<" >"$@"
+%.o68: %.u68
+	@command -v "$(U682A68)" >/dev/null || \
+		{ echo "error: $(U682A68) not found in PATH" >&2; exit 1; }
+	$(U682A68) <"$<" >"$@"
 
 %.a68: %.o68 o2a.py
 	$(PYTHON) o2a.py "$<" --output "$@"
