@@ -20,7 +20,7 @@ SHAPES_OBJ := $(SHAPES_A68:.a68=.o)
 all: $(COLLECTION) $(SHAPES)
 
 %.o68: %.u68 u682a68
-	$(PYTHON) u682a68 <"$<" >"$@"
+	u682a68 <"$<" >"$@"
 
 %.a68: %.o68 o2a.py
 	$(PYTHON) o2a.py "$<" --output "$@"
