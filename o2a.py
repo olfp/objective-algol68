@@ -50,13 +50,73 @@ class O68Preprocessor:
             raise ValueError("unterminated string literal")
         return "".join(result)
 
-    def parse_o68(self, source_code):
-        """Parse the Objective Algol 68 extension layer.
+    @staticmethod
+    def _matching_paren(source, opening):
+        """Return the index matching the parenthesis at *opening*.
 
-        Semicolons are separators in Algol 68: the final unit in a sequence may
-        omit the semicolon, and a semicolon before the next declaration is not
-        required to be repeated after every declaration.
+        Parentheses inside string literals do not affect the nesting depth.
         """
+        depth = 0
+        in_string = False
+        escaped = False
+        for index in range(opening, len(source)):
+            char = source[index]
+            if char == '"' and not escaped:
+                in_string = not in_string
+            if not in_string:
+                if char == "(":
+                    depth += 1
+                elif char == ")":
+                    depth -= 1
+                    if depth == 0:
+                        return index
+            escaped = char == "\\" and not escaped
+            if char != "\\":
+                escaped = False
+        raise ValueError("unterminated parenthesized expression")
+
+    def _parse_methods(self, block_content, identifier):
+        """Parse method declarations while preserving nested expressions.
+
+        A non-greedy regex such as ``(.*?)\)`` stops at the first closing
+        parenthesis in a method body.  That breaks bodies containing calls such
+        as ``REF NODE(NIL)``.  Locate each delimiter with balanced-parenthesis
+        scanning instead.
+        """
+        header = re.compile(
+            rf'(PUB\s+)?(VIRTUAL|EXTEND)?\s*METHOD\s+({identifier})\s*:',
+            re.IGNORECASE)
+        methods = []
+        for match in header.finditer(block_content):
+            position = match.end()
+            while position < len(block_content) and block_content[position].isspace():
+                position += 1
+
+            params = None
+            if position < len(block_content) and block_content[position] == "(":
+                end = self._matching_paren(block_content, position)
+                params = block_content[position + 1:end]
+                position = end + 1
+
+            return_match = re.match(rf'\s*({identifier})\s*:', block_content[position:],
+                                    re.IGNORECASE)
+            if not return_match:
+                raise ValueError(f"invalid return type for method {match.group(3)!r}")
+            return_type = return_match.group(1)
+            position += return_match.end()
+            while position < len(block_content) and block_content[position].isspace():
+                position += 1
+            if position >= len(block_content) or block_content[position] != "(":
+                raise ValueError(f"missing body for method {match.group(3)!r}")
+            end = self._matching_paren(block_content, position)
+            methods.append((
+                match.group(1), match.group(2), match.group(3), params,
+                return_type, block_content[position + 1:end]
+            ))
+        return methods
+
+    def parse_o68(self, source_code):
+        """Parse the Objective Algol 68 extension layer."""
         clean_code = self._strip_comments(source_code)
         identifier = _IDENTIFIER
 
@@ -69,11 +129,8 @@ class O68Preprocessor:
             c_name = self.normalize_identifier(class_name)
             parent = self.normalize_identifier(extends) if extends else None
             self.classes[c_name] = {
-                "name": c_name,
-                "parent": parent,
-                "is_pub": bool(pub),
-                "fields": [],
-                "methods": []
+                "name": c_name, "parent": parent, "is_pub": bool(pub),
+                "fields": [], "methods": []
             }
 
             fields = re.findall(
@@ -81,16 +138,12 @@ class O68Preprocessor:
                 block_content, re.IGNORECASE)
             for f_pub, f_type, f_name in fields:
                 self.classes[c_name]["fields"].append({
-                    "is_pub": bool(f_pub),
-                    "type": f_type.upper(),
+                    "is_pub": bool(f_pub), "type": f_type.upper(),
                     "name": self.normalize_identifier(f_name)
                 })
 
-            methods = re.findall(
-                rf'(PUB\s+)?(VIRTUAL|EXTEND)?\s*METHOD\s+({identifier})\s*:\s*'
-                rf'(?:\((.*?)\))?\s*({identifier})\s*:\s*\((.*?)\)\s*;?',
-                block_content, re.DOTALL | re.IGNORECASE)
-            for m_pub, m_type, m_name, m_params, m_ret, m_body in methods:
+            for m_pub, m_type, m_name, m_params, m_ret, m_body in self._parse_methods(
+                    block_content, identifier):
                 param_list = []
                 if m_params and m_params.strip():
                     for p_type, p_name in re.findall(
@@ -155,10 +208,7 @@ class O68Preprocessor:
                 body = method["body"]
                 body = re.sub(rf'super\s+SEND\s+({identifier})\s*\((.*?)\)',
                               rf'{c_meta["parent"]}\1(base OF self, \2)', body, flags=re.IGNORECASE)
-                body = body.replace(
-                    "OF self",
-                    "OF cself" if method["type"] in ["VIRTUAL", "EXTEND"] and c_meta["parent"] else "OF self"
-                )
+                body = body.replace("OF self", "OF cself" if method["type"] in ["VIRTUAL", "EXTEND"] and c_meta["parent"] else "OF self")
                 body = re.sub(rf'self\s*::\s*({identifier})', r'\1(self)', body, flags=re.IGNORECASE)
                 output.extend([f"        {body}", "    );\n"])
 
