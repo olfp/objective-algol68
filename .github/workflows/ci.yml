@@ -1,0 +1,22 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  test-code:
+    runs-on: ubuntu-latest  # You can use standard ubuntu-latest here
+    container:
+      # Pulls directly from your central registry package
+      image: ghcr.io/olfp/ga68-runner:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }} # Required if the package/image is kept private
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Centralized Script
+        run: |
+          # Both ga68 and your script are baked into this image globally!
+          u682a68 --input project_file.a68
