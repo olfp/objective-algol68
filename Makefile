@@ -1,5 +1,5 @@
 PYTHON ?= python3
-GA68 ?= ga68-16
+GA68 ?= ga68
 GA68FLAGS ?= --gnu --upper-stropping
 PROGRAM ?= objective-algol68
 
