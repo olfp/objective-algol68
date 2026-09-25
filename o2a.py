@@ -1,4 +1,6 @@
+import argparse
 import re
+from pathlib import Path
 
 
 _IDENTIFIER = r"[A-Za-z](?:[A-Za-z0-9]|(?:[_ ](?=[A-Za-z0-9])))*"
@@ -209,5 +211,20 @@ class O68Preprocessor:
         return 1 + self._get_inheritance_depth(parent) if parent else 0
 
 
+def main(argv=None):
+    parser = argparse.ArgumentParser(
+        description="Convert Objective Algol 68 source to Algol 68 source.")
+    parser.add_argument("input", type=Path, help="input .o68 file")
+    parser.add_argument("--output", "-o", type=Path, required=True,
+                        help="output .a68 file")
+    args = parser.parse_args(argv)
+
+    preprocessor = O68Preprocessor()
+    preprocessor.parse_o68(args.input.read_text(encoding="utf-8"))
+    args.output.write_text(
+        preprocessor.generate_a68(args.output.stem), encoding="utf-8")
+    return 0
+
+
 if __name__ == "__main__":
-    print("O68Preprocessor loaded; provide source text to parse_o68().")
+    raise SystemExit(main())
