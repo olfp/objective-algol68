@@ -1,8 +1,8 @@
 # DATEI: main.o68 #
-𝐀𝐂𝐂𝐄𝐒𝐒 𝑠ℎ𝑎𝑝𝑒𝑠𝑚𝑜𝑑 𝐁𝐄𝐆𝐈𝐍
+𝐚𝐜𝐜𝐞𝐬𝐬 𝑠ℎ𝑎𝑝𝑒𝑠𝑚𝑜𝑑 𝐛𝐞𝐠𝐢𝐧
     # Polymorphe Zuweisung: Ein CIRCLE verkleidet als SHAPE #
-    𝐒𝐇𝐀𝐏𝐄 𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚 := 𝐍𝐄𝐖 𝐂𝐈𝐑𝐂𝐋𝐄(10, 20, 5); 
+    𝐬𝐡𝐚𝐩𝐞 𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚 := 𝐧𝐞𝐰 𝐜𝐢𝐫𝐜𝐥𝐞(10, 20, 5); 
     
     # Dynamischer Aufruf (Dynamic Dispatch) über die VMT #
     𝑖𝑟𝑔𝑒𝑛𝑑_𝑒𝑖𝑛𝑒_𝑓𝑜𝑟𝑚 :: 𝑝𝑟𝑖𝑛𝑡_𝑎𝑟𝑒𝑎;
-𝐄𝐍𝐃
+𝐞𝐧𝐝
