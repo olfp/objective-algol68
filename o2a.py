@@ -110,6 +110,7 @@ class O68Preprocessor:
 
     def generate_a68(self, module_name="shapesmod"):
         """Generate the pure Algol-68-like target representation."""
+        identifier = _IDENTIFIER
         output = [f"MODULE {module_name.lower()} =", "DEF", ""]
         output.extend([
             "    # ========================================== #",
