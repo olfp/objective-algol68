@@ -78,10 +78,10 @@ class O68Preprocessor:
     def _parse_methods(self, block_content, identifier):
         """Parse method declarations while preserving nested expressions.
 
-        A non-greedy regex such as ``(.*?)\)`` stops at the first closing
-        parenthesis in a method body.  That breaks bodies containing calls such
-        as ``REF NODE(NIL)``.  Locate each delimiter with balanced-parenthesis
-        scanning instead.
+        A non-greedy regex such as ``(.*?)`` followed by a closing parenthesis
+        stops at the first closing parenthesis in a method body. That breaks
+        bodies containing calls such as ``REF NODE(NIL)``. Locate each delimiter
+        with balanced-parenthesis scanning instead.
         """
         header = re.compile(
             rf'(PUB\s+)?(VIRTUAL|EXTEND)?\s*METHOD\s+({identifier})\s*:',
