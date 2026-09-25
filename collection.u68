@@ -79,7 +79,7 @@
         𝐒𝐇𝐀𝐏𝐄𝐍𝐎𝐃𝐄 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 := ℎ𝑒𝑎𝑑 𝐎𝐅 𝑠𝑒𝑙𝑓;
         𝐖𝐇𝐈𝐋𝐄 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝐈𝐒𝐍𝐓 𝐍𝐈𝐋 𝐃𝐎
             # Dynamic Dispatch: Ruft polymorph die korrekte name-Methode auf #
-            𝑝𝑢𝑡𝑠(((𝑖𝑡𝑒𝑚 𝐎𝐅 𝑐𝑢𝑟𝑟𝑒𝑛𝑡) :: 𝑛𝑎𝑚𝑒, "'n"));
+            𝑝𝑢𝑡𝑠((𝑖𝑡𝑒𝑚 𝐎𝐅 𝑐𝑢𝑟𝑟𝑒𝑛𝑡) :: 𝑛𝑎𝑚𝑒, "'n");
             𝑐𝑢𝑟𝑟𝑒𝑛𝑡 := 𝑛𝑒𝑥𝑡 𝐎𝐅 𝑐𝑢𝑟𝑟𝑒𝑛𝑡
         𝐎𝐃
     );
@@ -100,8 +100,8 @@
     𝑚𝑦_𝑙𝑖𝑠𝑡 :: 𝑎𝑑𝑑(𝐍𝐄𝐖 𝐂𝐈𝐑𝐂𝐋𝐄(100, 100, 42));
 
     # 3. Collection-Informationen ausgeben #
-    𝑝𝑢𝑡𝑠(("Anzahl der Elemente: ", 𝑚𝑦_𝑙𝑖𝑠𝑡 :: 𝑠𝑖𝑧𝑒, "'n"));
-    𝑝𝑢𝑡𝑠(("Inhalt der Collection:'n", ));
+    𝑝𝑢𝑡𝑠("Anzahl der Elemente: ", 𝑚𝑦_𝑙𝑖𝑠𝑡 :: 𝑠𝑖𝑧𝑒, "'n");
+    𝑝𝑢𝑡𝑠("Inhalt der Collection:'n");
     
     𝑚𝑦_𝑙𝑖𝑠𝑡 :: 𝑝𝑟𝑖𝑛𝑡_𝑎𝑙𝑙;
 𝐄𝐍𝐃
