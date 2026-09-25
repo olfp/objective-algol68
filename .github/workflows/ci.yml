@@ -15,5 +15,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Build and run repository sources
-        run: make -B test
+      - name: Clean build files
+        run: make clean
+
+      - name: Run test suite
+        run: make test
