@@ -16,6 +16,8 @@ SHAPES_O68 := $(SHAPES_U68:.u68=.o68)
 SHAPES_A68 := $(SHAPES_O68:.o68=.a68)
 SHAPES_OBJ := $(SHAPES_A68:.a68=.o)
 
+.PRECIOUS: %.o68 %.a68
+
 .PHONY: all test run clean
 
 all: $(COLLECTION) $(SHAPES)
