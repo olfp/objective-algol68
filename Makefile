@@ -1,6 +1,6 @@
 PYTHON ?= python3
 GA68 ?= ga68
-GA68FLAGS ?= --gnu --upper-stropping
+GA68FLAGS ?= -std=gnu68 -fstropping=upper
 PROGRAM ?= objective-algol68
 
 O68_SOURCES := $(wildcard *.o68)
