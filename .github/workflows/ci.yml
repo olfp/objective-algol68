@@ -16,4 +16,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build and run repository sources
-        run: make test
+        run: make -B test
