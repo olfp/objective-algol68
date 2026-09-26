@@ -20,3 +20,8 @@ jobs:
 
       - name: Run test suite
         run: make test
+
+      - name: Interaktive Debug-Sitzung starten (Nur für Sie zugänglich)
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true # BLOCKIERT den Zugriff für alle anderen GitHub-Nutzer
