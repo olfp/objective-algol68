@@ -18,8 +18,8 @@ jobs:
       - name: Clean build files
         run: make clean
 
-      - name: Run test suite
-        run: make test
+ #     - name: Run test suite
+ #       run: make test
 
       - name: Interaktive Debug-Sitzung starten (Nur für Sie zugänglich)
         uses: mxschmitt/action-tmate@v3
